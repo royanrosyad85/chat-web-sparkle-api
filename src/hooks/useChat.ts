@@ -45,7 +45,7 @@ export const useChat = () => {
       
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: data.response || data.message || "I received your message, but couldn't generate a response.",
+        content: data.output || data.response || data.message || "I received your message, but couldn't generate a response.",
         isUser: false,
         timestamp: new Date(),
       };

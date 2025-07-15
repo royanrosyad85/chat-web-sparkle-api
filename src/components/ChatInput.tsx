@@ -21,66 +21,34 @@ export const ChatInput = ({ onSendMessage, isLoading }: ChatInputProps) => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4">
-      <form onSubmit={handleSubmit} className="relative">
-        <div className="relative bg-input rounded-3xl shadow-chat border border-border overflow-hidden">
-          <Input
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Ask anything"
-            disabled={isLoading}
+    <form onSubmit={handleSubmit} className="relative">
+      <div className="relative bg-input rounded-3xl shadow-chat border border-border overflow-hidden">
+        <Input
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Message ChatGPT"
+          disabled={isLoading}
+          className={cn(
+            "border-0 bg-transparent px-6 py-4 text-base placeholder:text-muted-foreground",
+            "focus-visible:ring-0 focus-visible:ring-offset-0",
+            "pr-16"
+          )}
+        />
+        
+        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+          <Button
+            type="submit"
+            size="sm"
+            disabled={!message.trim() || isLoading}
             className={cn(
-              "border-0 bg-transparent px-6 py-4 text-base placeholder:text-muted-foreground",
-              "focus-visible:ring-0 focus-visible:ring-offset-0",
-              "pr-32"
+              "h-8 w-8 p-0 rounded-full",
+              "bg-primary hover:bg-primary/90 disabled:bg-muted disabled:opacity-50"
             )}
-          />
-          
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 p-0 hover:bg-muted"
-              disabled={isLoading}
-            >
-              <Search className="h-4 w-4" />
-            </Button>
-            
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 p-0 hover:bg-muted"
-              disabled={isLoading}
-            >
-              <Brain className="h-4 w-4" />
-            </Button>
-            
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 p-0 hover:bg-muted"
-              disabled={isLoading}
-            >
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-            
-            <Button
-              type="submit"
-              size="sm"
-              disabled={!message.trim() || isLoading}
-              className={cn(
-                "h-8 w-8 p-0 rounded-full ml-1",
-                "bg-primary hover:bg-primary/90 disabled:bg-muted"
-              )}
-            >
-              <Send className="h-4 w-4" />
-            </Button>
-          </div>
+          >
+            <Send className="h-4 w-4" />
+          </Button>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 };
