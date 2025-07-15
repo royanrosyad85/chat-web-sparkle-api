@@ -26,7 +26,7 @@ export const ChatInput = ({ onSendMessage, isLoading }: ChatInputProps) => {
         <Input
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Message ChatGPT"
+          placeholder="Message here..."
           disabled={isLoading}
           className={cn(
             "border-0 bg-transparent px-6 py-4 text-base placeholder:text-muted-foreground",
