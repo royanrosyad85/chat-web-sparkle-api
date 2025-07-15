@@ -61,7 +61,22 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				'chat-bubble': {
+					user: 'hsl(var(--chat-bubble-user))',
+					'user-foreground': 'hsl(var(--chat-bubble-user-foreground))',
+					assistant: 'hsl(var(--chat-bubble-assistant))',
+					'assistant-foreground': 'hsl(var(--chat-bubble-assistant-foreground))'
 				}
+			},
+			boxShadow: {
+				'chat': 'var(--shadow-chat)'
+			},
+			backgroundImage: {
+				'gradient-primary': 'var(--gradient-primary)'
+			},
+			transitionTimingFunction: {
+				'smooth': 'var(--transition-smooth)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
