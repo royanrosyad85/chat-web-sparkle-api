@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useChatHistory, ChatSession } from "@/hooks/useChatHistory";
 
 interface Message {
   id: string;
@@ -9,11 +10,32 @@ interface Message {
 }
 
 export const useChat = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const {
+    currentSessionId,
+    getCurrentSession,
+    createNewSession,
+    addMessageToSession,
+  } = useChatHistory();
+
+  const [currentSession, setCurrentSession] = useState<ChatSession | null>(null);
+
+  // Update current session when currentSessionId changes
+  useEffect(() => {
+    const session = getCurrentSession();
+    setCurrentSession(session);
+  }, [currentSessionId, getCurrentSession]);
 
   const sendMessage = async (content: string) => {
+    let session = currentSession;
+    
+    // Create new session if none exists
+    if (!session) {
+      session = createNewSession();
+      setCurrentSession(session);
+    }
+
     const userMessage: Message = {
       id: Date.now().toString(),
       content,
@@ -21,7 +43,8 @@ export const useChat = () => {
       timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    // Add user message to session
+    addMessageToSession(session.id, userMessage);
     setIsLoading(true);
 
     try {
@@ -50,7 +73,8 @@ export const useChat = () => {
         timestamp: new Date(),
       };
 
-      setMessages((prev) => [...prev, assistantMessage]);
+      // Add assistant message to session
+      addMessageToSession(session.id, assistantMessage);
     } catch (error) {
       console.error("Error sending message:", error);
       
@@ -61,7 +85,10 @@ export const useChat = () => {
         timestamp: new Date(),
       };
 
-      setMessages((prev) => [...prev, errorMessage]);
+      // Add error message to session
+      if (session) {
+        addMessageToSession(session.id, errorMessage);
+      }
       
       toast({
         title: "Connection Error",
@@ -74,8 +101,10 @@ export const useChat = () => {
   };
 
   return {
-    messages,
+    messages: currentSession?.messages || [],
     isLoading,
     sendMessage,
+    currentSession,
+    setCurrentSession,
   };
 };
